@@ -96,8 +96,6 @@ pad = (n, m = 2) ->
 hex = (num) ->
   str = num.to-string 16 .to-upper-case! |> pad
 
-<<<<<<< HEAD
-=======
 # convert ASS timestamp to milliseconds
 parse-time = (text) ->
   res = text.match regex.time
@@ -123,8 +121,6 @@ format-time = (ms) ->
 
   "#{hh}:#{pad mm}:#{pad ss}.#{pad cs}"
 
-
->>>>>>> Use greedy matching at regex ends, add checks, fix typos
 #####################################
 ######### CLASS DEFINITIONS #########
 #####################################
@@ -374,3 +370,8 @@ class Script
       text += "#{e.to-ass!}\n"
 
     text
+<<<<<<< HEAD
+=======
+
+module.exports = {Color, Style, Event, Script}
+>>>>>>> Add node exports
