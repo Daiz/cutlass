@@ -70,6 +70,20 @@ regex =
     &H([\dA-F]{2})&       # alpha
   //
 
+# ASS timestamp (0:00:00.00)
+  time: //
+    (\d):                 # hours
+    (\d\d):               # minutes
+    (\d\d)\.              # seconds
+    (\d\d)                # centiseconds
+  //
+
+# script info key/value pair
+  info: //
+    (.*?):\s              # key
+    (.*?)                 # value
+  //
+
 ####################################
 ######### HELPER FUNCTIONS #########
 ####################################
