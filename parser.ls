@@ -306,6 +306,9 @@ class Script
     @styles = []
     @events = []
 
+    # just give an empty script if no text is given
+    if !text then return
+
     text .= replace /\r\n|\r/g '\n'
     rows = text.split '\n'
 
