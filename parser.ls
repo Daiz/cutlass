@@ -29,7 +29,7 @@ regex =
     (\d+?),               # margin left  (int)
     (\d+?),               # margin right (int)
     (\d+?),               # margin vert  (int)
-    (\d+?)                # encoding
+    (\d+)                 # encoding
   //
 
 # Parsing regex for event lines
@@ -44,7 +44,7 @@ regex =
     (\d+?),               # margin right (int)
     (\d+?),               # margin vert  (int)
     (.*?),                # effect (string)
-    (.*?)                 # text (string)
+    (.*)                  # text (string)
   //
 
 # style format (&HAABBGGRR)
@@ -81,7 +81,7 @@ regex =
 # script info key/value pair
   info: //
     (.*?):\s              # key
-    (.*?)                 # value
+    (.*)                  # value
   //
 
 ####################################
@@ -96,6 +96,35 @@ pad = (n, m = 2) ->
 hex = (num) ->
   str = num.to-string 16 .to-upper-case! |> pad
 
+<<<<<<< HEAD
+=======
+# convert ASS timestamp to milliseconds
+parse-time = (text) ->
+  res = text.match regex.time
+
+  hh = parse-int res.1, 10
+  mm = parse-int res.2, 10
+  ss = parse-int res.3, 10
+  cs = parse-int res.4, 10
+
+  (hh * 60 * 60 * 1000) + (mm * 60 * 1000) + (ss * 1000) + (cs * 10)
+
+# convert milliseconds to ASS timestamp
+format-time = (ms) ->
+  HOUR = 60 * 60 * 1000
+  MINUTE = 60 * 1000
+  SECOND = 1000
+  hh = 0; mm = 0; ss = 0; cs = 0;
+
+  hh = ~~  (ms / HOUR)
+  mm = ~~ ((ms - hh * HOUR) / MINUTE)
+  ss = ~~ ((ms - hh * HOUR - mm * MINUTE) / SECOND)
+  cs = ~~  (ms - hh * HOUR - mm * MINUTE - ss * SECOND / 10 + 0.5)
+
+  "#{hh}:#{pad mm}:#{pad ss}.#{pad cs}"
+
+
+>>>>>>> Use greedy matching at regex ends, add checks, fix typos
 #####################################
 ######### CLASS DEFINITIONS #########
 #####################################
@@ -153,9 +182,15 @@ class Color
 class Style
 
   # constructor
-  # takes a raw style line as input
+  # takes a raw style line or a regex match array as input
   (text) ->
-    res = text.match regex.style
+    res = switch typeof! text
+    | \String => text.match regex.style
+    | \Array  => text
+
+    if !res then
+      console.log "Something went wrong with: #text"
+      return
 
     @name         = res.1
     @font-name    = res.2
@@ -225,9 +260,15 @@ class Style
 class Event
 
   # constructor
-  # takes a raw event line as input
+  # takes a raw event line or a regex match array as input
   (text) ->
-    res = text.match regex.evt
+    res = switch typeof! text
+    | \String => text.match regex.evt
+    | \Array  => text
+
+    if !res then
+      console.log "Something went wrong with: #text"
+      return
 
     @comment      = res.1 is "Comment" and true or false
     @layer        = (parse-int res.2, 10) or 0
@@ -273,10 +314,10 @@ class Script
     rows = text.split '\n'
 
     for line in rows
-      block = switch line
-      | '[Script Info]' => \info
-      | '[V4+ Styles]'  => \styles
-      | '[Events]'      => \events
+      switch line
+      | '[Script Info]' => block = \info;   continue
+      | '[V4+ Styles]'  => block = \styles; continue
+      | '[Events]'      => block = \events; continue
 
       if block != \info and line.match /^Format: / then continue
 
@@ -286,17 +327,19 @@ class Script
             @info[res.1] = res.2
 
         case \styles
-          @styles.push new Style line
+          if res = line.match regex.style
+            @styles.push new Style res
 
         case \events
-          @events.push new Event line
+          if res = line.match regex.evt
+            @events.push new Event res
 
   # ASS output
   to-ass: ->
     text = "[Script Info]\n"
 
     for k,v of @info
-      text += "#key: #value\n"
+      text += "#k: #v\n"
 
     text += "\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
 
