@@ -190,8 +190,8 @@ class Style
   # opaque box boolean treatment
   border-style: ->
     switch it
-    | true => "3"
-    | false = "1"
+    | true  => "3"
+    | false => "1"
 
   # ASS output
   to-ass: ->
