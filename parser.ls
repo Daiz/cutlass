@@ -334,6 +334,28 @@ class Script
           if res = line.match regex.evt
             @events.push new Event res
 
+  header: (key, value) ->
+    if !value
+      @info[key]
+    else
+      @info[key] = value
+
+  add-style: (input) ->
+    switch typeof! input
+      case \Style
+        @styles.push input
+      case \String
+        if res = input.match regex.style
+          @styles.push new Style res
+
+  add-event: (input) ->
+    switch typeof! input
+      case \Eventt
+        @events.push input
+      case \String
+        if res = input.match regex.evt
+          @events.push new Event res
+
   # ASS output
   to-ass: ->
     text = "[Script Info]\n"
