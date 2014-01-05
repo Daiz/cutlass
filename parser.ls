@@ -229,7 +229,7 @@ class Event
   (text) ->
     res = text.match regex.evt
 
-    @comment      = res.1 is "Comment" and true else false
+    @comment      = res.1 is "Comment" and true or false
     @layer        = (parse-int res.2, 10) or 0
     @start-time   = parse-time res.3
     @end-time     = parse-time res.4
