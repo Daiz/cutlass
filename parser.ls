@@ -179,14 +179,16 @@ class Style
 
   # constructor
   # takes a raw style line or a regex match array as input
+  # if no input is given, returns an empty style
   (text) ->
     res = switch typeof! text
     | \String => text.match regex.style
     | \Array  => text
 
     if !res then
-      console.log "Something went wrong with: #text"
-      return
+      res = ['', '', 0, '', '', '', '', '',
+             0, 0, 0, 0, 100, 100, 0, 0, 1,
+             0, 0, 2, 0, 0, 0, 0]
 
     @name         = res.1
     @font-name    = res.2
@@ -257,14 +259,14 @@ class Event
 
   # constructor
   # takes a raw event line or a regex match array as input
+  # if no input is given, returns an empty event
   (text) ->
     res = switch typeof! text
     | \String => text.match regex.evt
     | \Array  => text
 
     if !res then
-      console.log "Something went wrong with: #text"
-      return
+      res = ['', 0, "0:00:00.00", "0:00:00.00", '', '', 0, 0, 0, '', '']
 
     @comment      = res.1 is "Comment" and true or false
     @layer        = (parse-int res.2, 10) or 0
