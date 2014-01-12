@@ -121,6 +121,21 @@ format-time = (ms) ->
 
   "#{hh}:#{pad mm}:#{pad ss}.#{pad cs}"
 
+# get time as an object containing hours, minutes, seconds and centi/millisecs
+get-time = (ms) ->
+  HOUR = 60 * 60 * 1000
+  MINUTE = 60 * 1000
+  SECOND = 1000
+  hh = 0; mm = 0; ss = 0; cs = 0;
+
+  hh = ~~  (ms / HOUR)
+  mm = ~~ ((ms - hh * HOUR) / MINUTE)
+  ss = ~~ ((ms - hh * HOUR - mm * MINUTE) / SECOND)
+  cs = ~~  (ms - hh * HOUR - mm * MINUTE - ss * SECOND / 10 + 0.5)
+  ms = ~~  (ms - hh * HOUR - mm * MINUTE - ss * SECOND + 0.5)
+
+  {hh, mm, ss, cs, ms}
+
 #####################################
 ######### CLASS DEFINITIONS #########
 #####################################
@@ -291,6 +306,10 @@ class Event
     @margin-vert  = (parse-int res.9, 10) or 0
     @effect       = res.10 or ""
     @text         = res.11 or ""
+
+  # get times as objects
+  get-start-time: -> get-time @start-time
+  get-end-time:   -> get-time @end-time
 
   # output type
   type: -> @comment and "Comment" or "Dialogue"
