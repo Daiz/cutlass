@@ -380,7 +380,8 @@ class Script
 
   # ASS output
   to-ass: ->
-    text = "[Script Info]\n"
+    # UTF-8 BOM is included in the beginning
+    text = "\ufeff[Script Info]\n"
 
     for k,v of @info
       text += "#k: #v\n"
