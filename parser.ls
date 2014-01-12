@@ -48,27 +48,27 @@ regex =
   //
 
 # style format (&HAABBGGRR)
-  alpha-color: //
+  alpha-color: //^
     &H
     ([\dA-F]{2})          # alpha
     ([\dA-F]{2})          # blue
     ([\dA-F]{2})          # green
     ([\dA-F]{2})          # red
-  //
+  $//
 
 # inline color format (&HBBGGRR&)
-  color: //
+  color: //^
     &H
     ([\dA-F]{2})          # blue
     ([\dA-F]{2})          # green
     ([\dA-F]{2})          # red
     &
-  //
+  $//
 
 # inline alpha format (&HAA&)
-  alpha: //
+  alpha: //^
     &H([\dA-F]{2})&       # alpha
-  //
+  $//
 
 # ASS timestamp (0:00:00.00)
   time: //
@@ -117,7 +117,7 @@ format-time = (ms) ->
   hh = ~~  (ms / HOUR)
   mm = ~~ ((ms - hh * HOUR) / MINUTE)
   ss = ~~ ((ms - hh * HOUR - mm * MINUTE) / SECOND)
-  cs = ~~  (ms - hh * HOUR - mm * MINUTE - ss * SECOND / 10 + 0.5)
+  cs = ~~ ((ms - hh * HOUR - mm * MINUTE - ss * SECOND) / 10 + 0.5)
 
   "#{hh}:#{pad mm}:#{pad ss}.#{pad cs}"
 
@@ -138,6 +138,7 @@ class Color
       @g = g
       @b = b
       @a = a or 0
+      return
     if !a && !b && !g && r then
       res = r.match regex.alpha-color
       if res
@@ -145,18 +146,21 @@ class Color
         @b = parse-int res.2, 16
         @g = parse-int res.3, 16
         @a = parse-int res.1, 16
+        return
       else res = r.match regex.color
       if res
         @r = parse-int res.3, 16
         @g = parse-int res.2, 16
         @b = parse-int res.1, 16
         @a = 0
+        return
       else res = r.match regex.alpha
       if res
         @r = 0
         @g = 0
         @b = 0
         @a = parse-int res.1, 16
+        return
 
   # return color in style format (&HAABBGGRR)
   style: ->
@@ -184,6 +188,7 @@ class Style
     res = switch typeof! text
     | \String => text.match regex.style
     | \Array  => text
+    | _       => false
 
     if !res then
       res = ['', '', 0, '', '', '', '', '',
@@ -206,13 +211,19 @@ class Style
     @spacing      = (parse-float res.14, 10) or 0
     @angle        = (parse-float res.15, 10) or 0
     @opaque-box   = res.16 is "3" and true or false
-    @border       = (parse-float res.17, 10) or 2.8
-    @shadow       = (parse-float res.18, 10) or 1.2
+    @border       = (parse-float res.17, 10)
+    @shadow       = (parse-float res.18, 10)
     @align        = (parse-int res.19, 10) or 2
-    @margin-left  = (parse-int res.20, 10) or 160
-    @margin-right = (parse-int res.21, 10) or 160
-    @margin-vert  = (parse-int res.22, 10) or 42
+    @margin-left  = (parse-int res.20, 10)
+    @margin-right = (parse-int res.21, 10)
+    @margin-vert  = (parse-int res.22, 10)
     @encoding     = (parse-int res.23, 10) or 0
+
+    if @border == null then @border = 0
+    if @shadow == null then @shadow = 0
+    if @margin-left  == null then @margin-left  = 0
+    if @margin-right == null then @margin-right = 0
+    if @margin-vert  == null then @margin-vert  = 0
 
   # bold/italic/etc boolean treatment
   prop: ->
@@ -264,6 +275,7 @@ class Event
     res = switch typeof! text
     | \String => text.match regex.evt
     | \Array  => text
+    | _       => false
 
     if !res then
       res = ['', 0, "0:00:00.00", "0:00:00.00", '', '', 0, 0, 0, '', '']
@@ -314,6 +326,8 @@ class Script
     text .= replace /\r\n|\r/g '\n'
     rows = text.split '\n'
 
+    block = \info
+
     for line in rows
       switch line
       | '[Script Info]' => block = \info;   continue
@@ -357,6 +371,13 @@ class Script
         if res = input.match regex.evt
           @events.push new Event res
 
+  # default sort
+  sort: ->
+    @events.sort (a, b) ->
+      c = a.start-time - b.start-time
+      if c == 0 then return a.layer - b.layer
+      else return c
+
   # ASS output
   to-ass: ->
     text = "[Script Info]\n"
@@ -375,8 +396,5 @@ class Script
       text += "#{e.to-ass!}\n"
 
     text
-<<<<<<< HEAD
-=======
 
 module.exports = {Color, Style, Event, Script}
->>>>>>> Add node exports
