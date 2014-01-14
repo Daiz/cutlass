@@ -405,12 +405,19 @@ class Script
     for k,v of @info
       text += "#k: #v\n"
 
-    text += "\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
+    text += "\n[V4+ Styles]\n"
+    text += "Format: Name, Fontname, Fontsize, "
+    text += "PrimaryColour, SecondaryColour, OutlineColour, BackColour, "
+    text += "Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, "
+    text += "Angle, BorderStyle, Outline, Shadow, Alignment, "
+    text += "MarginL, MarginR, MarginV, Encoding\n"
 
     for s in @styles
       text += "#{s.to-ass!}\n"
 
-    text += "\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
+    text += "\n[Events]\n"
+    text ?= "Format: Layer, Start, End, Style, Name, "
+    text += "MarginL, MarginR, MarginV, Effect, Text\n"
 
     for e in @events
       text += "#{e.to-ass!}\n"
