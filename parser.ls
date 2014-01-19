@@ -397,6 +397,9 @@ class Script
       if c == 0 then return a.layer - b.layer
       else return c
 
+  # return a clone of the current script
+  clone: -> new Script @to-ass!
+  
   # ASS output
   to-ass: ->
     # UTF-8 BOM is included in the beginning
