@@ -10,7 +10,7 @@
     "url": "git://github.com/Daiz-/cutlass.git"
   },
   "scripts": {
-    "preinstall": "lsc make"
+    "postinstall": "lsc make"
   },
   "keywords": [
     "ASS",
