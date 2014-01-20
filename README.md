@@ -29,7 +29,8 @@ var rawScript1 = script1.toAss();
 
 var script2 = new ass.Script(rawAss2);
 
-// for this script, we want to move all with the style "Sign" to the top.
+// for this script, we want to move all lines with the style "Sign" to the top.
+// `script.events` is a plain JS array, so we can use them our purpose here.
 var signs = [];
 var dialogue = [];
 for (var i = 0, len = script2.events.length; i < len; ++i) {
@@ -42,6 +43,6 @@ for (var i = 0, len = script2.events.length; i < len; ++i) {
 }
 script2.events = signs.concat(dialogue);
 
-# get the script as ASS
+// get the script as ASS
 var rawScript2 = script2.toAss();
 ```
