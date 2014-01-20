@@ -419,7 +419,7 @@ class Script
       text += "#{s.to-ass!}\n"
 
     text += "\n[Events]\n"
-    text ?= "Format: Layer, Start, End, Style, Name, "
+    text += "Format: Layer, Start, End, Style, Name, "
     text += "MarginL, MarginR, MarginV, Effect, Text\n"
 
     for e in @events
