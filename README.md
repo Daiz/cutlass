@@ -12,7 +12,7 @@ $ npm install cutlass
 
 ## Basic Info and Examples
 
-*cutlass* exports an object with four classes: Script, Event, Style and Color. The one you usually want to deal with is Script, which represents a whole ASS script.
+*cutlass* exports an object with four classes: Script, Event, Style and Color. The one you usually want to deal with is Script, which represents a whole ASS script. (For more detailed info about the classes and the functions and properties they export, refer to `src/parser.ls` for the time being.)
 
 ```javascript
 var ass = require('cutlass');
