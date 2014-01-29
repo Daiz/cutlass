@@ -339,8 +339,8 @@ class Header
 
   to-ass: ->
     switch @type
-    | \Comment => ";#value"
-    | \Key     => "#key: #value"
+    | \Comment => \; + @value
+    | \Key     => @key + ': ' + @value
 
 class Script
 
@@ -432,7 +432,7 @@ class Script
     # UTF-8 BOM is included in the beginning
     text = "\ufeff[Script Info]\n"
 
-    for h of @info
+    for h in @info
       text += "#{h.to-ass!}\n"
 
     text += "\n[V4+ Styles]\n"
