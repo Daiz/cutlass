@@ -31,4 +31,8 @@ suite \Headers !->
     script.header \baz .should.equal \qux
 
   test 'should always contain basic fields' !->
+    # Basic header fields are:
+    # ScriptType: v4.00+
+    # WrapStyle: 0/1/2 (0 by default)
+    # ScaledBorderAndShadow: yes/no (yes by default)
     e-script.to-ass!.should.equal eh-file
