@@ -391,7 +391,7 @@ class Script
     case \string
       if !value
         for h in @info
-          if h.type is \Key and h.key is key then return res
+          if h.type is \Key and h.key is key then return h.value
       else
         res = void
         for h in @info
