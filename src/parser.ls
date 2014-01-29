@@ -347,7 +347,7 @@ class Script
   # constructor
   # takes a raw script as input
   (text) ->
-    @info = {}
+    @info = []
     @styles = []
     @events = []
 
@@ -369,8 +369,11 @@ class Script
 
       switch block
         case \info
-          if !line.match /^;/ and res = line.match regex.info
-            @info[res.1] = res.2
+          if line.match /^;/
+            res = line.split \;
+            @info.push new Header \Comment void res.1
+          else if res = line.match regex.info
+            @info.push new Header \Key res.1, res.2
 
         case \styles
           if res = line.match regex.style
