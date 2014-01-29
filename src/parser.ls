@@ -330,12 +330,24 @@ class Event
       "#{@text}"
     ].join ""
 
+class Header
+
+  (type, key, value) ->
+    @type = type
+    @key = key
+    @value = value
+
+  to-ass: ->
+    switch @type
+    | \Comment => \; + @value
+    | \Key     => @key + ': ' + @value
+
 class Script
 
   # constructor
   # takes a raw script as input
   (text) ->
-    @info = {}
+    @info = []
     @styles = []
     @events = []
 
@@ -357,8 +369,11 @@ class Script
 
       switch block
         case \info
-          if !line.match /^;/ and res = line.match regex.info
-            @info[res.1] = res.2
+          if line.match /^;/
+            res = line.split \;
+            @info.push new Header \Comment void res.1
+          else if res = line.match regex.info
+            @info.push new Header \Key res.1, res.2
 
         case \styles
           if res = line.match regex.style
@@ -369,10 +384,22 @@ class Script
             @events.push new Event res
 
   header: (key, value) ->
-    if !value
-      @info[key]
-    else
-      @info[key] = value
+    switch typeof key
+    case \object
+      for k, v of key
+        @header k, v
+    case \string
+      if !value
+        for h in @info
+          if h.type is \Key and h.key is key then return res
+      else
+        res = void
+        for h in @info
+          if h.type is \Key and h.key is key then res = h
+        if res then res.value = value
+        else
+          res = new Header \Key key, value
+          @info.push res
 
   add-style: (input) ->
     switch typeof! input
@@ -405,8 +432,8 @@ class Script
     # UTF-8 BOM is included in the beginning
     text = "\ufeff[Script Info]\n"
 
-    for k,v of @info
-      text += "#k: #v\n"
+    for h in @info
+      text += "#{h.to-ass!}\n"
 
     text += "\n[V4+ Styles]\n"
     text += "Format: Name, Fontname, Fontsize, "
