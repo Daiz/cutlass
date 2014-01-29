@@ -10,7 +10,8 @@
     "url": "git://github.com/Daiz-/cutlass.git"
   },
   "scripts": {
-    "postinstall": "lsc make"
+    "postinstall": "lsc make",
+    "test": "mocha"
   },
   "keywords": [
     "ASS",
