@@ -425,6 +425,6 @@ class Script
     for e in @events
       text += "#{e.to-ass!}\n"
 
-    text
+    text.trim!
 
 module.exports = {Color, Style, Event, Script}
