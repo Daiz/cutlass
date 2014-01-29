@@ -432,8 +432,8 @@ class Script
     # UTF-8 BOM is included in the beginning
     text = "\ufeff[Script Info]\n"
 
-    for k,v of @info
-      text += "#k: #v\n"
+    for h of @info
+      text += "#{h.to-ass!}\n"
 
     text += "\n[V4+ Styles]\n"
     text += "Format: Name, Fontname, Fontsize, "
