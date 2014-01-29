@@ -385,9 +385,16 @@ class Script
 
   header: (key, value) ->
     if !value
-      @info[key]
+      for h in @info
+        if h.type is \Key and h.key is key then return res
     else
-      @info[key] = value
+      res = void
+      for h in @info
+        if h.type is \Key and h.key is key then res = h
+      if res then res.value = value
+      else
+        res = new Header \Key key, value
+        @info.push res
 
   add-style: (input) ->
     switch typeof! input
