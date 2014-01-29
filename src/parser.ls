@@ -383,6 +383,14 @@ class Script
           if res = line.match regex.evt
             @events.push new Event res
 
+    # check script for basic headers and add them if they are missing
+    if !@header 'ScriptType'
+      @header 'ScriptType' 'v4.00+'
+    if !@header 'WrapStyle'
+      @header 'WrapStyle' '0'
+    if !@header 'ScaledBorderAndShadow'
+      @header 'ScaledBorderAndShadow' 'yes'
+
   header: (key, value) ->
     switch typeof key
     case \object
