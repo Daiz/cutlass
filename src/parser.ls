@@ -430,8 +430,7 @@ class Script
   
   # ASS output
   to-ass: ->
-    # UTF-8 BOM is included in the beginning
-    text = "\ufeff[Script Info]\n"
+    text = "[Script Info]\n"
 
     for h in @info
       text += "#{h.to-ass!}\n"
@@ -453,6 +452,7 @@ class Script
     for e in @events
       text += "#{e.to-ass!}\n"
 
-    text.trim!
+    # UTF-8 BOM is included in the beginning
+    ('\ufeff' + text.trim!)
 
 module.exports = {Color, Style, Event, Header, Script}
