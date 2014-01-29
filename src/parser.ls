@@ -423,6 +423,7 @@ class Script
       c = a.start-time - b.start-time
       if c == 0 then return a.layer - b.layer
       else return c
+    return @
 
   # return a clone of the current script
   clone: -> new Script @to-ass!
