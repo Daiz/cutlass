@@ -10,7 +10,8 @@
     "url": "git://github.com/Daiz-/cutlass.git"
   },
   "scripts": {
-    "postinstall": "lsc make"
+    "postinstall": "lsc make",
+    "test": "mocha"
   },
   "keywords": [
     "ASS",
@@ -22,5 +23,9 @@
   "dependencies": {
     "shelljs": "~0.2.6",
     "LiveScript": "~1.2.0"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.17.1"
   }
 }
