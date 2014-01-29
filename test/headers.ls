@@ -1,7 +1,5 @@
-{cat} = require \shelljs
 should = require \chai .should!
-read = (file) -> cat file .replace /\r\n|\r/g '\n' .replace /^\ufeff/ ''
-
+require! '../read'
 ass = require '../src/parser.ls'
 
 suite \Headers !->
