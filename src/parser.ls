@@ -454,4 +454,4 @@ class Script
 
     text.trim!
 
-module.exports = {Color, Style, Event, Script}
+module.exports = {Color, Style, Event, Header, Script}
