@@ -1,6 +1,6 @@
 {
   "name": "cutlass",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Daiz <taneli.vatanen@gmail.com> (http://daiz.io/)",
   "description": "A library for dealing with ASS subtitles.",
   "license": "MIT",
