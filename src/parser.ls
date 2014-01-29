@@ -330,6 +330,18 @@ class Event
       "#{@text}"
     ].join ""
 
+class Header
+
+  (type, key, value) ->
+    @type = type
+    @key = key
+    @value = value
+
+  to-ass: ->
+    switch @type
+    | \Comment => ";#value"
+    | \Key     => "#key: #value"
+
 class Script
 
   # constructor
