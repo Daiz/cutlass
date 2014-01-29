@@ -384,17 +384,22 @@ class Script
             @events.push new Event res
 
   header: (key, value) ->
-    if !value
-      for h in @info
-        if h.type is \Key and h.key is key then return res
-    else
-      res = void
-      for h in @info
-        if h.type is \Key and h.key is key then res = h
-      if res then res.value = value
+    switch typeof key
+    case \object
+      for k, v of key
+        @header k, v
+    case \string
+      if !value
+        for h in @info
+          if h.type is \Key and h.key is key then return res
       else
-        res = new Header \Key key, value
-        @info.push res
+        res = void
+        for h in @info
+          if h.type is \Key and h.key is key then res = h
+        if res then res.value = value
+        else
+          res = new Header \Key key, value
+          @info.push res
 
   add-style: (input) ->
     switch typeof! input
