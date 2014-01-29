@@ -1,0 +1,3 @@
+--compilers ls:LiveScript
+--ui tdd
+--reporter spec
