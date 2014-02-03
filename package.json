@@ -10,7 +10,7 @@
     "url": "git://github.com/Daiz-/cutlass.git"
   },
   "scripts": {
-    "postinstall": "lsc make",
+    "prepublish": "lsc make",
     "test": "mocha"
   },
   "keywords": [
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/Daiz-/cutlass/issues"
   },
-  "dependencies": {
+  "devDependencies": {
     "shelljs": "~0.2.6",
     "LiveScript": "~1.2.0"
   },
