@@ -9,7 +9,8 @@ ext = /\.ls$/
 target.all = !->
   console.log 'Compiling LiveScript to JavaScript...'
   files = ls \-R './src'
-  if not test \-e './lib' then mkdir './lib'
+  if test \-e './lib' then rm \-r './lib'
+  mkdir './lib'
   for file in files
     if file.match ext
       _in = cat path.join './src/' file
