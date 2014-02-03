@@ -1,6 +1,6 @@
 {
   "name": "cutlass",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "Daiz <taneli.vatanen@gmail.com> (http://daiz.io/)",
   "description": "A library for dealing with ASS subtitles.",
   "license": "MIT",
@@ -19,10 +19,6 @@
   ],
   "bugs": {
     "url": "https://github.com/Daiz-/cutlass/issues"
-  },
-  "devDependencies": {
-    "shelljs": "~0.2.6",
-    "LiveScript": "~1.2.0"
   },
   "devDependencies": {
     "chai": "~1.8.1",
