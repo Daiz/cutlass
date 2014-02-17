@@ -311,6 +311,23 @@ class Event
   get-start-time: -> get-time @start-time
   get-end-time:   -> get-time @end-time
 
+  # get line duration in milliseconds
+  duration: -> @end-time - @start-time
+
+  # characters per second
+  cps: ->
+    second = @duration! / 1000
+    # remove all extra stuff from the text so that only characters remain
+    characters = @text.replace //
+      \\(N|n|h)     # line breaks and hard spaces
+      |[\.,?!]      # punctuation
+      |{.*?}        # tags and comments
+      |\s+          # whitespace
+      //g ''
+      .length
+
+    Math.round characters / second
+
   # output type
   type: -> @comment and "Comment" or "Dialogue"
 
