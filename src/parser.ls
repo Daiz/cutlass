@@ -1,3 +1,7 @@
+require! {
+  \stable
+}
+
 ###################################
 ######### PARSING REGEXES #########
 ###################################
@@ -444,7 +448,7 @@ class Script
 
   # default sort
   sort: ->
-    @events.sort (a, b) ->
+    stable.inplace @events, (a, b) ->
       c = a.start-time - b.start-time
       if c == 0 then return a.layer - b.layer
       else return c
